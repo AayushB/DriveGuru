@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">DriveGuru</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="hello">Hello %s!</string>
+    <string name="hello_relayr">Hello Driver!</string>
+    <string name="action_log_in">Log in</string>
+    <string name="action_log_out">Log out</string>
+    <string name="successfully_logged_in">You were successfully logged in!</string>
+    <string name="successfully_logged_out">You were successfully logged out!</string>
+    <string name="unsuccessfully_logged_in">There was a problem in the log in.</string>
+    <string name="something_went_wrong">Oops! Something went wrong</string>
+    <string name="title_temperature">Temperature</string>
+    <string name="temperature_name">temp</string>
+
+</resources>
