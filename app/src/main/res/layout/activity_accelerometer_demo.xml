@@ -6,13 +6,13 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".ThermometerDemo">
 
     <LinearLayout
-        android:layout_width="306dp"
-        android:layout_height="74dp"
-        android:background="@drawable/aa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:weightSum="1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="197dp">
+        android:layout_marginTop="197dp"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:layout_width="wrap_content"
@@ -68,8 +68,8 @@
     <TextView
         android:id="@+id/txt_welcome"
         android:text="@string/hello_driver"
-        android:layout_width="147dp"
-        android:layout_height="57dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textSize="22sp"
         android:layout_marginTop="138dp"
         android:layout_alignParentTop="true"
@@ -79,6 +79,19 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
+
+
+        <TextView
+            android:id="@+id/txt_accelerometer_title"
+            android:text="@string/accelerometer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:paddingTop="25dp"
+            android:paddingBottom="25dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal|bottom" />
 
         <TextView
             android:id="@+id/txt_accelerometer_value"
@@ -91,6 +104,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal" />
+
+
     </LinearLayout>
 
 </RelativeLayout>
