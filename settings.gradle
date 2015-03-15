@@ -1,1 +1,2 @@
 include ':app', ':libs:android-sdk'
+project(':libs:android-sdk').projectDir = new File('app/android-sdk-master/android-sdk')

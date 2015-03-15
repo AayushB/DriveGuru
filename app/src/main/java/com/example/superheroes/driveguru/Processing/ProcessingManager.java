@@ -12,7 +12,7 @@ import io.relayr.model.AccelGyroscope;
 public class ProcessingManager extends Thread {
 
     private static final int FILTER_DEPTH = 5;
-    private static final double MAX_STEERING_G = 0.4;
+    private static final double MAX_STEERING_G = 0.3;
     private static final double MAX_ACCELERATION_G = 0.3;
     private static final double DANGEROUS_BRAKE_G = 0.3 ;
     private static final double VERY_DANGEROUS_BRAKE_G = 0.5;
@@ -101,7 +101,7 @@ public class ProcessingManager extends Thread {
             /* detect bad behaviour */
 
             if(differenceLateralAccel > MAX_STEERING_G || (-differenceLateralAccel) > MAX_STEERING_G){
-                gameController.removePoints(5);
+                gameController.removePoints(3);
             }
 
             if(-differenceLongitudinalAccel > MAX_ACCELERATION_G){
@@ -109,10 +109,10 @@ public class ProcessingManager extends Thread {
             }
 
             if(differenceLongitudinalAccel > DANGEROUS_BRAKE_G){
-                gameController.removePoints(10);
+                gameController.removePoints(3);
 
                 if(differenceLongitudinalAccel > VERY_DANGEROUS_BRAKE_G){
-
+                    gameController.removePoints(5);
                 }
             }
 

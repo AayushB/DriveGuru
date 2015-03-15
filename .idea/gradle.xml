@@ -10,8 +10,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/app/android-sdk-master/android-sdk" />
             <option value="$PROJECT_DIR$/libs" />
-            <option value="$PROJECT_DIR$/libs/android-sdk" />
           </set>
         </option>
       </GradleProjectSettings>

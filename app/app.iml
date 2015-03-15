@@ -92,8 +92,8 @@
     <orderEntry type="library" exported="" name="okhttp-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
     <orderEntry type="library" exported="" name="okhttp-urlconnection-2.2.0" level="project" />
-    <orderEntry type="library" exported="" name="mqtt-client-0.4.0" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.8.0" level="project" />
+    <orderEntry type="library" exported="" name="mqtt-client-0.4.0" level="project" />
     <orderEntry type="library" exported="" name="rxjava-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3" level="project" />
   </component>
