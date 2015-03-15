@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.superheroes.driveguru.Processing.ProcessingManager;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +20,7 @@ import io.relayr.ble.BleDeviceMode;
 import io.relayr.ble.BleDeviceType;
 import io.relayr.ble.service.BaseService;
 import io.relayr.ble.service.DirectConnectionService;
+import io.relayr.model.AccelGyroscope;
 import io.relayr.model.Reading;
 import io.relayr.model.User;
 import rx.Observable;
@@ -54,6 +57,8 @@ public class Accelerometer extends Activity {
     private boolean mStartedScanning;
     private BleDevice mDevice;
 
+    private ProcessingManager mProcessingManager;
+
 
 
     @Override
@@ -67,6 +72,8 @@ public class Accelerometer extends Activity {
         mWelcomeStrangerTextView = (TextView) view.findViewById(R.id.txt_welcome2);
         mTemperatureValueTextView = (TextView) view.findViewById(R.id.txt_accelerometer_value);
         mTemperatureNameTextView = (TextView) view.findViewById(R.id.txt_accelerometer_name);
+
+        mProcessingManager = new ProcessingManager();
 
         setContentView(view);
 
@@ -372,6 +379,14 @@ public class Accelerometer extends Activity {
 
 
                             mTemperatureValueTextView.setText("x " + str_arr[0]+"\n y " + str_arr[1]+ "\n z " + str_arr[2] );
+
+                            AccelGyroscope sample = new AccelGyroscope();
+                            sample.ts = System.currentTimeMillis();
+                            sample.acceleration.x = Float.valueOf(str_arr[0]);
+                            sample.acceleration.y = Float.valueOf(str_arr[0]);
+                            sample.acceleration.z = Float.valueOf(str_arr[0]);
+
+                            mProcessingManager.addData(sample);
                         }
                     }
                 });
