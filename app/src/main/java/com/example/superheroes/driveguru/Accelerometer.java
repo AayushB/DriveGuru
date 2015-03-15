@@ -385,7 +385,8 @@ public class Accelerometer extends Activity {
 
                             System.out.println("x " + x+"\n y " + y + "\n z " + z );
 
-                            mTemperatureValueTextView.setText("x " + str_arr[0]+"\n y " + str_arr[1]+ "\n z " + str_arr[2] );
+                           // mTemperatureValueTextView.setText("x " + str_arr[0]+"\n y " + str_arr[1]+ "\n z " + str_arr[2] );
+                            mTemperatureValueTextView.setText(Integer.toString(mProcessingManager.gameController.getScore()));
 
                            // AccelGyroscope sample = new AccelGyroscope();
                             AccelGyroscope.Acceleration acc = new AccelGyroscope.Acceleration();
