@@ -9,8 +9,9 @@
     <string name="successfully_logged_out">You were successfully logged out!</string>
     <string name="unsuccessfully_logged_in">There was a problem in the log in.</string>
     <string name="something_went_wrong">Oops! Something went wrong</string>
-    <string name="title_accelerometer">Accelerometer</string>
-    <string name="accelerometer_name">Accelerometer</string>
+    <string name="title_accelerometer">Super Hero Detector</string>
+    <string name="accelerometer_title">Super Hero Detector</string>
+    <string name="accelerometer_name">Score</string>
 
     <string name="sensor_discovery_error">There was an error when searching for sensors</string>
     <string name="sensor_connection_error">There was an error connecting to the sensor</string>

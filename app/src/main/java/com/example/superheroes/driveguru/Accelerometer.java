@@ -415,25 +415,33 @@ public class Accelerometer extends Activity {
 
                             // mTemperatureValueTextView.setText("x " + str_arr[0]+"\n y " + str_arr[1]+ "\n z " + str_arr[2] );
                             int score = mProcessingManager.gameController.getScore();
-                            mTemperatureValueTextView.setText(Integer.toString(score));
+                            mTemperatureValueTextView.setText("SCORE: "+Integer.toString(score));
 
-                            mScore5TextView.setTextColor(Color.rgb(0, 69, 17));
-                            mScore4TextView.setTextColor(Color.rgb(40, 110, 0));
-                            mScore3TextView.setTextColor(Color.rgb(99, 110, 0));
-                            mScore2TextView.setTextColor(Color.rgb(110, 69, 0));
-                            mScore1TextView.setTextColor(Color.rgb(110, 0, 0));
+                            mScore5TextView.setTextColor(Color.argb(35,0, 69, 17));
+                            mScore4TextView.setTextColor(Color.argb(35,40, 110, 0));
+                            mScore3TextView.setTextColor(Color.argb(35,99, 110, 0));
+                            mScore2TextView.setTextColor(Color.argb(35,110, 69, 0));
+                            mScore1TextView.setTextColor(Color.argb(35,110, 0, 0));
 
                             if (score > 15) {
                                 mScore5TextView.setTextColor(Color.rgb(0, 204, 78));
+                                mWelcomeDriverTextView.setText("STATUS : SUPER HERO");
                             } else if (score >= 0 && score <= 15) {
                                 mScore4TextView.setTextColor(Color.rgb(26, 240, 2));
+                                mWelcomeDriverTextView.setText("STATUS : HERO");
                             } else if (score >= -50 && score < 0) {
                                 mScore3TextView.setTextColor(Color.rgb(246, 255, 0));
+                                mWelcomeDriverTextView.setText("STATUS : NUTCASE");
                             } else if (score >= -100 && score < -50) {
                                 mScore2TextView.setTextColor(Color.rgb(255, 162, 0));
+                                mWelcomeDriverTextView.setText("STATUS : SUPER NUTCASE");
                             } else {
                                 mScore1TextView.setTextColor(Color.rgb(255, 0, 0));
+                                mWelcomeDriverTextView.setText("STATUS : TASMANIAN DEVIL");
                             }
+
+
+
 
                             try {
                                 mFile.write((str_arr[0]+","+str_arr[1]+","+str_arr[2]+"\n").getBytes());
