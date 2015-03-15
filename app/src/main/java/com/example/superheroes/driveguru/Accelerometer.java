@@ -2,6 +2,7 @@ package com.example.superheroes.driveguru;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,9 @@ import android.widget.Toast;
 
 import com.example.superheroes.driveguru.Processing.ProcessingManager;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,6 +41,7 @@ public class Accelerometer extends Activity {
 
     /**
      * Once the Activity has been started, the onCreate method will be called
+     *
      * @param savedInstanceState
      */
 
@@ -44,6 +49,12 @@ public class Accelerometer extends Activity {
     private TextView mWelcomeStrangerTextView;
     private TextView mTemperatureValueTextView;
     private TextView mTemperatureNameTextView;
+    private TextView mScore1TextView;
+    private TextView mScore2TextView;
+    private TextView mScore3TextView;
+    private TextView mScore4TextView;
+    private TextView mScore5TextView;
+
 
     private Subscription mUserInfoSubscription = Subscriptions.empty();
     private Subscription mTemperatureDeviceSubscription = Subscriptions.empty();
@@ -58,7 +69,7 @@ public class Accelerometer extends Activity {
     private BleDevice mDevice;
 
     private ProcessingManager mProcessingManager;
-
+    private RandomAccessFile mFile;
 
 
     @Override
@@ -68,16 +79,30 @@ public class Accelerometer extends Activity {
         //we load the layout xml defined in app/src/main/res/layout
         View view = View.inflate(this, R.layout.activity_accelerometer_demo, null);
 
+
         mWelcomeDriverTextView = (TextView) view.findViewById(R.id.txt_welcome);
-        mWelcomeStrangerTextView = (TextView) view.findViewById(R.id.txt_welcome2);
+        //mWelcomeStrangerTextView = (TextView) view.findViewById(R.id.txt_welcome2);
         mTemperatureValueTextView = (TextView) view.findViewById(R.id.txt_accelerometer_value);
-        mTemperatureNameTextView = (TextView) view.findViewById(R.id.txt_accelerometer_name);
+        //mTemperatureNameTextView = (TextView) view.findViewById(R.id.txt_accelerometer_name);
+        mScore1TextView = (TextView) view.findViewById(R.id.score_1);
+        mScore2TextView = (TextView) view.findViewById(R.id.score_2);
+        mScore3TextView = (TextView) view.findViewById(R.id.score_3);
+        mScore4TextView = (TextView) view.findViewById(R.id.score_4);
+        mScore5TextView = (TextView) view.findViewById(R.id.score_5);
+
+        try {
+            String filepath = this.getFilesDir().getPath();
+            mFile = new RandomAccessFile(filepath+"/dg"+String.valueOf(System.currentTimeMillis()), "rw");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         mProcessingManager = new ProcessingManager();
         mProcessingManager.start();
         //mProcessingManager.run();
 
         setContentView(view);
+
 
         //we use the relayr SDK to see if the user is logged in by
         //caling the isUserLoggedIn function
@@ -108,6 +133,11 @@ public class Accelerometer extends Activity {
         unSubscribeToUpdates();
         disconnectBluetooth();
 
+        try {
+            mFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 
@@ -173,15 +203,11 @@ public class Accelerometer extends Activity {
     }
 
 
-
-
-
-
-
     /**
      * When Android is ready to draw any menus it initiates the
      * "prepareOptionsMenu" event, this method is caled to handle that
      * event.
+     *
      * @param menu
      * @return
      */
@@ -296,20 +322,20 @@ public class Accelerometer extends Activity {
     }
 
     private void updateUiForANonLoggedInUser() {
-        mTemperatureValueTextView.setVisibility(View.GONE);
-        mTemperatureNameTextView.setVisibility(View.GONE);
+        // mTemperatureValueTextView.setVisibility(View.GONE);
+        // mTemperatureNameTextView.setVisibility(View.GONE);
         mWelcomeDriverTextView.setVisibility(View.GONE);
-        mWelcomeStrangerTextView.setVisibility(View.VISIBLE);
-        mWelcomeStrangerTextView.setText(R.string.hello_stranger);
+        // mWelcomeStrangerTextView.setVisibility(View.VISIBLE);
+        // mWelcomeStrangerTextView.setText(R.string.hello_stranger);
     }
 
     private void updateUiForALoggedInUser() {
-        mTemperatureValueTextView.setVisibility(View.VISIBLE);
-        mTemperatureNameTextView.setVisibility(View.VISIBLE);
+        //  mTemperatureValueTextView.setVisibility(View.VISIBLE);
+//        mTemperatureNameTextView.setVisibility(View.VISIBLE);
         mWelcomeDriverTextView.setVisibility(View.VISIBLE);
-        mWelcomeStrangerTextView.setVisibility(View.GONE);
-        mWelcomeDriverTextView.setText(R.string.hello_driver);
-        mTemperatureNameTextView.setText("Reading From Accelerometer");
+        //mWelcomeStrangerTextView.setVisibility(View.GONE);
+        //mWelcomeDriverTextView.setText(R.string.hello_driver);
+//        mTemperatureNameTextView.setText("Reading From Accelerometer");
         //loadUserInfo();
     }
 
@@ -347,8 +373,7 @@ public class Accelerometer extends Activity {
                     @Override
                     public void onNext(Reading reading) {
                         System.out.println(" ");
-                        if(reading.meaning.equals("acceleration"))
-                        {
+                        if (reading.meaning.equals("acceleration")) {
                             System.out.println("check");
 
                             //parse
@@ -364,31 +389,60 @@ public class Accelerometer extends Activity {
                             String[] str_arr = value.split(",");
 
 
-                            if(Double.valueOf(str_arr[0])>600)
-                            {
-                                str_arr[0]=Double.toString(-1.0*(655.35- Math.round(Double.valueOf(str_arr[0])*100.0)/100.0));
+                            if (Double.valueOf(str_arr[0]) > 600) {
+                                str_arr[0] = Double.toString(-1.0 * (655.35 - Math.round(Double.valueOf(str_arr[0]) * 100.0) / 100.0));
                             }
-                            if(Double.valueOf(str_arr[1])>600)
-                            {
-                                str_arr[1]=Double.toString(-1.0*(655.35- Math.round(Double.valueOf(str_arr[1])*100.0)/100.0));
+                            if (Double.valueOf(str_arr[1]) > 600) {
+                                str_arr[1] = Double.toString(-1.0 * (655.35 - Math.round(Double.valueOf(str_arr[1]) * 100.0) / 100.0));
                             }
 
-                            if(Double.valueOf(str_arr[2])>600)
-                            {
-                                str_arr[2]=Double.toString(-1.0*(655.35- Math.round(Double.valueOf(str_arr[2])*100.0)/100.0));
+                            if (Double.valueOf(str_arr[2]) > 600) {
+                                str_arr[2] = Double.toString(-1.0 * (655.35 - Math.round(Double.valueOf(str_arr[2]) * 100.0) / 100.0));
                             }
 
                             float x = Float.valueOf(str_arr[0]);
                             float y = Float.valueOf(str_arr[1]);
                             float z = Float.valueOf(str_arr[2]);
 
+                            /*
+                            try {
+                                buf.write((str_arr[0]+","+str_arr[1]+","+str_arr[2]).getBytes());
+                            }catch(IOException e){}
+                            */
 
-                            System.out.println("x " + x+"\n y " + y + "\n z " + z );
 
-                           // mTemperatureValueTextView.setText("x " + str_arr[0]+"\n y " + str_arr[1]+ "\n z " + str_arr[2] );
-                            mTemperatureValueTextView.setText(Integer.toString(mProcessingManager.gameController.getScore()));
+                            System.out.println("x " + x + "\n y " + y + "\n z " + z);
 
-                           // AccelGyroscope sample = new AccelGyroscope();
+                            // mTemperatureValueTextView.setText("x " + str_arr[0]+"\n y " + str_arr[1]+ "\n z " + str_arr[2] );
+                            int score = mProcessingManager.gameController.getScore();
+                            mTemperatureValueTextView.setText(Integer.toString(score));
+
+                            mScore5TextView.setTextColor(Color.rgb(0, 69, 17));
+                            mScore4TextView.setTextColor(Color.rgb(40, 110, 0));
+                            mScore3TextView.setTextColor(Color.rgb(99, 110, 0));
+                            mScore2TextView.setTextColor(Color.rgb(110, 69, 0));
+                            mScore1TextView.setTextColor(Color.rgb(110, 0, 0));
+
+                            if (score > 15) {
+                                mScore5TextView.setTextColor(Color.rgb(0, 204, 78));
+                            } else if (score >= 0 && score <= 15) {
+                                mScore4TextView.setTextColor(Color.rgb(26, 240, 2));
+                            } else if (score >= -50 && score < 0) {
+                                mScore3TextView.setTextColor(Color.rgb(246, 255, 0));
+                            } else if (score >= -100 && score < -50) {
+                                mScore2TextView.setTextColor(Color.rgb(255, 162, 0));
+                            } else {
+                                mScore1TextView.setTextColor(Color.rgb(255, 0, 0));
+                            }
+
+                            try {
+                                mFile.write((str_arr[0]+","+str_arr[1]+","+str_arr[2]+"\n").getBytes());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            // AccelGyroscope sample = new AccelGyroscope();
                             AccelGyroscope.Acceleration acc = new AccelGyroscope.Acceleration();
                             //sample.ts = System.currentTimeMillis();
                             acc.x = x;
@@ -405,7 +459,6 @@ public class Accelerometer extends Activity {
     }
 
 
-
     private void unSubscribeToUpdates() {
         mScannerSubscription.unsubscribe();
         mDeviceSubscription.unsubscribe();
@@ -416,7 +469,6 @@ public class Accelerometer extends Activity {
     private void disconnectBluetooth() {
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter.isEnabled()) mBluetoothAdapter.disable();
+
     }
-
-
 }
