@@ -1,16 +1,26 @@
 <resources>
     <string name="app_name">DriveGuru</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="hello">Hello %s!</string>
-    <string name="hello_relayr">Hello Driver!</string>
+    <string name="hello_stranger">Hello Stranger!</string>
+    <string name="hello_driver">Hello Driver!</string>
     <string name="action_log_in">Log in</string>
     <string name="action_log_out">Log out</string>
     <string name="successfully_logged_in">You were successfully logged in!</string>
     <string name="successfully_logged_out">You were successfully logged out!</string>
     <string name="unsuccessfully_logged_in">There was a problem in the log in.</string>
     <string name="something_went_wrong">Oops! Something went wrong</string>
-    <string name="title_temperature">Temperature</string>
-    <string name="temperature_name">temp</string>
+    <string name="title_accelerometer">Accelerometer</string>
+    <string name="accelerometer_name">Accelerometer</string>
+
+    <string name="sensor_discovery_error">There was an error when searching for sensors</string>
+    <string name="sensor_connection_error">There was an error connecting to the sensor</string>
+    <string name="sensor_reading_error">There was an error getting readings from the sensor</string>
+
+    <string name="bt_not_supported">Bluetooth not supported</string>
+    <string name="device_unsubscribing">Unsubscribe THU device</string>
+    <string name="thermometer_not_found">No thermometer found in DIRRECT_CONNECTION mode</string>
+
+
+
 
 </resources>
