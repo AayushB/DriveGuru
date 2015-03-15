@@ -17,20 +17,20 @@ public class ProcessingManager extends Thread {
     private static final double DANGEROUS_BRAKE_G =0.3 ;
     private static final double VERY_DANGEROUS_BRAKE_G = 0.5;
 
-    GameController gameController;
+    public static GameController gameController;
 
-    private AccelGyroCircularBuffer rawDataAccelGyroCircularBuffer;
- /*   private AccelGyroCircularBuffer filteredDataAccelGyroCircularBuffer; */
+    private AccelCircularBuffer rawDataAccelGyroCircularBuffer;
+ /*   private AccelCircularBuffer filteredDataAccelGyroCircularBuffer; */
 
 
     public ProcessingManager(){
-        rawDataAccelGyroCircularBuffer = new AccelGyroCircularBuffer(50);
-//        filteredDataAccelGyroCircularBuffer = new AccelGyroCircularBuffer(50);
+        rawDataAccelGyroCircularBuffer = new AccelCircularBuffer(50);
+//        filteredDataAccelGyroCircularBuffer = new AccelCircularBuffer(50);
         gameController = new GameController();
     }
 
-    public void addData(AccelGyroscope acceleration){
-        rawDataAccelGyroCircularBuffer.store(acceleration);
+    public void addData(AccelGyroscope.Acceleration acc){
+        rawDataAccelGyroCircularBuffer.store(acc);
 
 /*
         if(rawDataAccelGyroCircularBuffer.getDataToProcessNumber() > FILTER_DEPTH){
@@ -69,24 +69,34 @@ public class ProcessingManager extends Thread {
 
 
     public void run() {
-        AccelGyroscope processBuffer[] = new AccelGyroscope[2];
+        AccelGyroscope.Acceleration processBuffer[] = new AccelGyroscope.Acceleration[2];
         int i=0;
 
         /* Waiting until we have at least 2 samples to process */
         while (rawDataAccelGyroCircularBuffer.getDataToProcessNumber() < 2){};
 
-        processBuffer[i%2] = rawDataAccelGyroCircularBuffer.read();
-        long previousTimestamp = processBuffer[i%2].ts;
+        while((processBuffer[i%2] = rawDataAccelGyroCircularBuffer.read()) == null);
+        // long previousTimestamp = processBuffer[i%2].ts;
         i++;
 
-        while(true){
+        long previousTimestamp = System.currentTimeMillis();
 
+        while(true){
             do {
                 processBuffer[i % 2] = rawDataAccelGyroCircularBuffer.read();
-            } while(processBuffer[i%2] != null);
+            } while(processBuffer[i%2] == null);
 
-            float differenceLongitudinalAccel = processBuffer[i % 2].acceleration.x - processBuffer[(i-1)%2].acceleration.x;
-            float differenceLateralAccel = processBuffer[i % 2].acceleration.y - processBuffer[(i-1)%2].acceleration.y;
+
+            try {
+                float x1 = processBuffer[i % 2].x;
+                float x2 = processBuffer[(i + 1) % 2].x;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+            float differenceLongitudinalAccel = processBuffer[i % 2].x - processBuffer[(i+1)%2].x;
+            float differenceLateralAccel = processBuffer[i % 2].y - processBuffer[(i+1)%2].y;
 
             /* detect bad behaviour */
 
@@ -106,8 +116,9 @@ public class ProcessingManager extends Thread {
                 }
             }
 
-            if((processBuffer[i%2].ts - processBuffer[(i+1)%2].ts) > 60000){
+            if((System.currentTimeMillis() - previousTimestamp) > 60000){
                 gameController.addPoint();
+                previousTimestamp = System.currentTimeMillis();
             }
 
 

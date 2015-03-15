@@ -8,20 +8,20 @@ import io.relayr.model.AccelGyroscope;
  * Copyright (c) Whisper 2015
  */
 
-class AccelGyroCircularBuffer {
-    private AccelGyroscope data[];
+class AccelCircularBuffer {
+    private AccelGyroscope.Acceleration data[];
     private int head;
     private int tail;
     private int distanceBetweenHeadAndTail;
 
-    public AccelGyroCircularBuffer(int depth) {
-        data = new AccelGyroscope[depth];
+    public AccelCircularBuffer(int depth) {
+        data = new AccelGyroscope.Acceleration[depth];
         head = 0;
         tail = 0;
         distanceBetweenHeadAndTail = 0;
     }
 
-    public boolean store(AccelGyroscope value) {
+    public boolean store(AccelGyroscope.Acceleration value) {
         if (!bufferFull()) {
             data[tail++] = value;
             if (tail == data.length) {
@@ -34,9 +34,9 @@ class AccelGyroCircularBuffer {
         }
     }
 
-    public AccelGyroscope read() {
+    public AccelGyroscope.Acceleration read() {
         if (head != tail) {
-            AccelGyroscope value = data[head++];
+            AccelGyroscope.Acceleration value = data[head++];
             if (head == data.length) {
                 head = 0;
             }
@@ -61,7 +61,7 @@ class AccelGyroCircularBuffer {
         return distanceBetweenHeadAndTail;
     }
 
-    AccelGyroscope[] getData(){
+    AccelGyroscope.Acceleration[] getData(){
         return data;
     }
 }

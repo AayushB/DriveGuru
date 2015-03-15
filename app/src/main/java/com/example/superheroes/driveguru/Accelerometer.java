@@ -74,6 +74,8 @@ public class Accelerometer extends Activity {
         mTemperatureNameTextView = (TextView) view.findViewById(R.id.txt_accelerometer_name);
 
         mProcessingManager = new ProcessingManager();
+        mProcessingManager.start();
+        //mProcessingManager.run();
 
         setContentView(view);
 
@@ -364,29 +366,38 @@ public class Accelerometer extends Activity {
 
                             if(Double.valueOf(str_arr[0])>600)
                             {
-                                str_arr[0]=Double.toString(655.3501-Double.valueOf(str_arr[0]));
+                                str_arr[0]=Double.toString(-1.0*(655.35- Math.round(Double.valueOf(str_arr[0])*100.0)/100.0));
                             }
                             if(Double.valueOf(str_arr[1])>600)
                             {
-                                str_arr[1]=Double.toString(655.3501-Double.valueOf(str_arr[1]));
+                                str_arr[1]=Double.toString(-1.0*(655.35- Math.round(Double.valueOf(str_arr[1])*100.0)/100.0));
                             }
 
                             if(Double.valueOf(str_arr[2])>600)
                             {
-                                str_arr[2]=Double.toString(655.3501-Double.valueOf(str_arr[2]));
+                                str_arr[2]=Double.toString(-1.0*(655.35- Math.round(Double.valueOf(str_arr[2])*100.0)/100.0));
                             }
 
+                            float x = Float.valueOf(str_arr[0]);
+                            float y = Float.valueOf(str_arr[1]);
+                            float z = Float.valueOf(str_arr[2]);
 
+
+                            System.out.println("x " + x+"\n y " + y + "\n z " + z );
 
                             mTemperatureValueTextView.setText("x " + str_arr[0]+"\n y " + str_arr[1]+ "\n z " + str_arr[2] );
 
-                            AccelGyroscope sample = new AccelGyroscope();
-                            sample.ts = System.currentTimeMillis();
-                            sample.acceleration.x = Float.valueOf(str_arr[0]);
-                            sample.acceleration.y = Float.valueOf(str_arr[0]);
-                            sample.acceleration.z = Float.valueOf(str_arr[0]);
+                           // AccelGyroscope sample = new AccelGyroscope();
+                            AccelGyroscope.Acceleration acc = new AccelGyroscope.Acceleration();
+                            //sample.ts = System.currentTimeMillis();
+                            acc.x = x;
+                            acc.y = y;
+                            acc.z = z;
 
-                            mProcessingManager.addData(sample);
+
+                            mProcessingManager.addData(acc);
+
+
                         }
                     }
                 });

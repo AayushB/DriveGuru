@@ -22,4 +22,8 @@ public class GameController {
         score = score - number;
     }
 
+    public int getScore()
+    {
+        return score;
+    }
 }
